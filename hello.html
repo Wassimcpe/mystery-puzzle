@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Layered Puzzle</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .container { max-width: 500px; margin: 50px auto; padding: 20px; border: 2px solid black; border-radius: 10px; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container" id="puzzle-container">
+        <h2>Multi-Layered Puzzle</h2>
+        <p id="puzzle-question">What is the smallest number expressible as the sum of two cubes in two different ways?</p>
+        <input type="text" id="answer" placeholder="Enter answer here">
+        <button onclick="checkAnswer()">Submit</button>
+        <p id="feedback"></p>
+    </div>
+    
+    <script>
+        let stage = 0;
+        let letters = [];
+        
+        const puzzles = [
+            { question: "What is the smallest number expressible as the sum of two cubes in two different ways?", answer: "1729", letter: "R" },
+            { question: "Decode this Base64 string: QmV5b25kIGNvZGUgbGllcyBhIGhpZGRlbiBtZXNzYWdlLg==", answer: "Beyond code lies a hidden message", letter: "A" },
+            { question: "Find the hidden text in the image ", answer: "shadow", letter: "N" },
+            { question: "Why do programmers prefer dark mode? ", answer: "Because light attracts bugs", letter: "D" },
+            { question: "Convert this binary to text: 01110100 01101000 01101001 01110011", answer: "this", letter: "O" }
+        ];
+        
+        function checkAnswer() {
+            let userAnswer = document.getElementById("answer").value.trim();
+            let feedback = document.getElementById("feedback");
+            
+            if (userAnswer.toLowerCase() === puzzles[stage].answer.toLowerCase()) {
+                letters.push(puzzles[stage].letter);
+                stage++;
+                if (stage < puzzles.length) {
+                    document.getElementById("puzzle-question").innerText = puzzles[stage].question;
+                    document.getElementById("answer").value = "";
+                    feedback.innerText = `Correct! Your letter is '${letters[letters.length - 1]}'. Next puzzle!`;
+                } else {
+                    finalStep();
+                }
+            } else {
+                feedback.innerText = "Wrong answer. Try again!";
+            }
+        }
+        
+        function finalStep() {
+            document.getElementById("puzzle-container").innerHTML = `<h2>Final Step</h2>
+                <p>Convert this binary code to decimal -> 01010010 01000001 01001110 01000100 01001111</p>
+                <input type='text' id='final-answer' placeholder='Enter decoded text'>
+                <button onclick='checkFinalAnswer()'>Submit</button>
+                <p id='final-feedback'></p>`;
+        }
+        
+        function checkFinalAnswer() {
+            let finalAnswer = document.getElementById("final-answer").value.trim();
+            if (finalAnswer.toUpperCase() === "RANDO") {
+                document.getElementById("final-feedback").innerText = "Congratulations! You solved the puzzle!";
+            } else {
+                document.getElementById("final-feedback").innerText = "Wrong answer! Try again.";
+            }
+        }
+    </script>
+</body>
+</html>
